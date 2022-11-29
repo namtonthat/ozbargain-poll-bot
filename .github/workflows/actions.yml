@@ -44,8 +44,7 @@ jobs:
         run: poetry install --no-interaction --no-root --without dev
 
       - name: execute py script # run main.py
-        run: |
-        poetry run python ozbargain-bot.py
+        run: poetry run python ozbargain-bot.py
 
       - name: commit files
         run: |
