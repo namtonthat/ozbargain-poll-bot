@@ -7,10 +7,7 @@ on: [push]
 
 jobs:
   ci:
-    matrix:
-      os: ['ubuntu-latest']
-      python-version: ['3.8.13']
-    runs-on: {{ maxtrix.os }}
+    runs-on: 'ubuntu-latest'
 
     steps:
       - name: checkout repo content
@@ -19,7 +16,7 @@ jobs:
       - name: setup python
         uses: actions/setup-python@v4
         with:
-          python-version: ${{ matrix.python-version }} # install the python version needed
+          python-version: '3.8.13' # install the python version needed
 
       - name: Install Poetry
         uses: snok/install-poetry@v1
