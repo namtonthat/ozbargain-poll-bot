@@ -10,7 +10,7 @@ import os
 
 from bokeh.io import show, save, output_file
 from bokeh.plotting import figure, curdoc
-from bokeh.palettes import Category20c
+from bokeh.palettes import TolRainbow, Sunset
 from bokeh.transform import cumsum
 
 import logging
@@ -40,50 +40,62 @@ def find_all_active_polls():
     return poll_ids
 
 
+
 def generate_poll_webchart(id):
-       "Generates a pie chart for a given poll"
-       prefix_url = "https://www.ozbargain.com.au/node/"
-       url = prefix_url + str(id)
-       page = requests.get(url)
-       soup = BeautifulSoup(page.content, 'html.parser')
-       poll = soup.find(id="poll")
+    "Generates a pie chart for a given poll"
+    prefix_url = "https://www.ozbargain.com.au/node/"
+    url = prefix_url + str(id)
+    page = requests.get(url)
+    soup = BeautifulSoup(page.content, 'html.parser')
+    poll = soup.find(id="poll")
+    LOGGER.info('Parsing data for %s', id)
+    # scraping data
+    try:
+            span_vote = poll.find_all("span", class_="nvb voteup")
+            span_options = poll.find_all("span", class_="polltext")
+            options = [option.get_text() for option in span_options]
+            votes = [int(vote.get_text()) for vote in span_vote]
+            title = soup.find("title").text.split(" - ")[0]
+    except AttributeError:
+            LOGGER.info('No data found for %s', id)
+            return
 
-       # scraping data
-       span_vote = poll.find_all("span", class_="nvb voteup")
-       span_options = poll.find_all("span", class_="polltext")
-       options = [option.get_text() for option in span_options]
-       votes = [int(vote.get_text()) for vote in span_vote]
-       title = soup.find("title").text.split(" - ")[0]
-       # set theme
-       curdoc().theme='light_minimal'
+    if options:
+        LOGGER.info('Data found for %s', id)
+        x = dict(zip(options, votes))
+        data = pd.Series(x).reset_index(name='value').rename(columns={'index': 'options'})
+        data['angle'] = data['value']/data['value'].sum() * 2*pi
+        if len(x) > 2:
+                data['color'] = TolRainbow[len(x)]
+        elif (len(x) > 0) and (len(x) <=2):
+                data['color'] = Sunset[3][:len(x)]
 
-       # create figure
-       p = figure(width=1000, height=1000, title=f"{title}",
-              tooltips="@options: @value", x_range=(-0.5, 1.0))
+        # checks whether an options exists
+        # set theme
+        curdoc().theme='light_minimal'
 
-       x = dict(zip(options, votes))
-       data = pd.Series(x).reset_index(name='value').rename(columns={'index': 'options'})
-       data['angle'] = data['value']/data['value'].sum() * 2*pi
-       data['color'] = Category20c[len(x)]
+        # create figure
+        p = figure(width=1000, height=1000, title=f"{title}",
+                tooltips="@options: @value", x_range=(-0.5, 1.0))
 
 
-       p.wedge(x=0, y=1, radius=0.4,
-              start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
-              line_color="white", fill_color='color', legend_field='options', source=data)
+        p.wedge(x=0, y=1, radius=0.4,
+                start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
+                line_color="white", fill_color='color', legend_field='options', source=data)
 
-       p.axis.axis_label = None
-       p.axis.visible = False
-       p.grid.grid_line_color = None
+        p.axis.axis_label = None
+        p.axis.visible = False
+        p.grid.grid_line_color = None
 
-       output_path = f"outputs/"
-       if not os.path.exists(output_path):
-         os.makedirs(output_path)
+        output_path = f"outputs/"
+        if not os.path.exists(output_path):
+                os.makedirs(output_path)
 
-       LOGGER.info('Generating webchart for poll: %s', id)
-       # setting output
-       output_file(filename=f"{output_path}/{poll_id}.html", title=title)
+        LOGGER.info('Generating webchart for poll: %s', id)
+        # setting output
+        output_file(filename=f"{output_path}/{id}.html", title=title)
 
-       save(p)
+        save(p)
 
 if __name__ == "__main__":
     active_polls = find_all_active_polls()
