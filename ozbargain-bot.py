@@ -4,12 +4,14 @@ A bot that scrapes Ozbargain polls and generates a webchart for them - stored in
 
 from bs4 import BeautifulSoup
 import requests
+import pandas as pd
+from math import pi
 import os
 
-from bokeh.io import show, export_png
-from bokeh.plotting import figure
-from datetime import datetime
-
+from bokeh.io import show, save, output_file
+from bokeh.plotting import figure, curdoc
+from bokeh.palettes import Category20c
+from bokeh.transform import cumsum
 
 import logging
 logging.basicConfig()
@@ -37,39 +39,51 @@ def find_all_active_polls():
 
     return poll_ids
 
+
 def generate_poll_webchart(id):
-    "Generates a webchart for a given poll"
-    prefix_url = "https://www.ozbargain.com.au/node/"
-    url = prefix_url + str(id)
-    page = requests.get(url)
-    soup = BeautifulSoup(page.content, 'html.parser')
-    poll = soup.find(id="poll")
-    # scraping data
-    span_vote = poll.find_all("span", class_="nvb voteup")
-    span_options = poll.find_all("span", class_="polltext")
-    options = [option.get_text() for option in span_options]
-    votes = [vote.get_text() for vote in span_vote]
-    title = soup.find("title").text.split(" - ")[0]
+       "Generates a pie chart for a given poll"
+       prefix_url = "https://www.ozbargain.com.au/node/"
+       url = prefix_url + str(id)
+       page = requests.get(url)
+       soup = BeautifulSoup(page.content, 'html.parser')
+       poll = soup.find(id="poll")
 
-    # create figure
-    p = figure(x_range=options, height=250, title=title,
-           toolbar_location=None, tools="")
+       # scraping data
+       span_vote = poll.find_all("span", class_="nvb voteup")
+       span_options = poll.find_all("span", class_="polltext")
+       options = [option.get_text() for option in span_options]
+       votes = [int(vote.get_text()) for vote in span_vote]
+       title = soup.find("title").text.split(" - ")[0]
+       # set theme
+       curdoc().theme='light_minimal'
 
-    p.vbar(x=options, top=votes, width=1.5)
+       # create figure
+       p = figure(width=1000, height=1000, title=f"{title}",
+              tooltips="@options: @value", x_range=(-0.5, 1.0))
 
-    # customisation
-    p.xgrid.grid_line_color = None
-    p.xaxis.axis_label = "Options"
-    p.yaxis.axis_label = "Votes"
-    p.y_range.start = 0
+       x = dict(zip(options, votes))
+       data = pd.Series(x).reset_index(name='value').rename(columns={'index': 'options'})
+       data['angle'] = data['value']/data['value'].sum() * 2*pi
+       data['color'] = Category20c[len(x)]
 
-    output_path = f"outputs/"
-    if not os.path.exists(output_path):
-      os.makedirs(output_path)
 
-    LOGGER.info('Generating webchart for poll: %s', id)
-    export_png(p, filename=f"{output_path}/{poll_id}.png")
-    return
+       p.wedge(x=0, y=1, radius=0.4,
+              start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
+              line_color="white", fill_color='color', legend_field='options', source=data)
+
+       p.axis.axis_label = None
+       p.axis.visible = False
+       p.grid.grid_line_color = None
+
+       output_path = f"outputs/"
+       if not os.path.exists(output_path):
+         os.makedirs(output_path)
+
+       LOGGER.info('Generating webchart for poll: %s', id)
+       # setting output
+       output_file(filename=f"{output_path}/{poll_id}.html", title=title)
+
+       save(p)
 
 if __name__ == "__main__":
     active_polls = find_all_active_polls()
