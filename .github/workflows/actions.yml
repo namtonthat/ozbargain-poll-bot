@@ -1,9 +1,9 @@
 name: daily-scrape
 
-# on: [push]
-on:
-  schedule:
-    - cron: '0 0 * * 0' # once a week
+on: [push]
+# on:
+#   schedule:
+#     - cron: '0 0 * * 0' # once a week
 
 jobs:
   ci:
