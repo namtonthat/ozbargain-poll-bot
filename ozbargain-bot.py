@@ -6,11 +6,13 @@ from bs4 import BeautifulSoup
 import requests
 import pandas as pd
 from math import pi
-import os
 import markdown2
-import shutil
+from datetime import datetime
+import json
+from dataclasses import dataclass
+from typing import List
 
-from bokeh.io import show, save, output_file
+from bokeh.io import save, output_file
 from bokeh.plotting import figure, curdoc
 from bokeh.palettes import TolRainbow, Sunset
 from bokeh.transform import cumsum
@@ -20,6 +22,31 @@ import logging
 logging.basicConfig()
 LOGGER = logging.getLogger(__name__)
 LOGGER.setLevel(logging.INFO)
+
+
+@dataclass
+class OzbargainPoll:
+    "Class to hold data for Ozbargain Poll"
+    date_published: str
+    node_id: int
+    title: str
+    options: List[str]
+    votes: List[int]
+
+    def __post_init__(self):
+        "Remove | from title"
+        title = self.title.replace("|", "")
+        self.title = title
+
+    @property
+    def create_markdown_text(self) -> str:
+        "Generate md string from poll data"
+        text = (
+            f"| {self.date_published} |"
+            + f"<a href='{PREFIX_URL}{self.node_id}' title='Ozbargain'><b>{self.title}</b></a> |"
+            + f"<a href='{self.node_id}.html' title='Rendered Pie Chart'>Poll</a> |"
+        )
+        return text
 
 
 def find_all_active_polls():
@@ -101,44 +128,58 @@ def generate_poll_webchart(id):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
     poll = soup.find(id="poll")
+
     LOGGER.info("Parsing data for %s", id)
     # scraping data
     try:
         span_vote = poll.find_all("span", class_="nvb voteup")
         span_options = poll.find_all("span", class_="polltext")
         options = [option.get_text() for option in span_options]
-        try:
-            votes = [int(vote.get_text()) for vote in span_vote]
-        except ValueError:
-            return
-
+        poll_stats = json.loads(
+            soup.find("script", {"type": "application/ld+json"}).text
+        )
+        date_published = poll_stats.get("datePublished")[:10]
+        votes = [int(vote.get_text()) for vote in span_vote]
         title = soup.find("title").text.split(" - ")[0]
+
         if options:
             create_bokeh_plot(options, votes, title, id)
-            return title, id
+            ozb_poll = OzbargainPoll(
+                date_published=date_published,
+                node_id=id,
+                title=title,
+                options=options,
+                votes=votes,
+            )
+            return ozb_poll
 
-    except AttributeError:
+    except (AttributeError, ValueError) as e:
         LOGGER.info("No data found for %s", id)
         return
 
 
-def create_html_page(title_and_id_array):
+def create_html_page(polls: List[OzbargainPoll]) -> None:
     """Create navigation webpage for all available Ozbargain Polls within the last day"""
     header_text = [
         '<link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-3.8.2.min.css"/>',
         "<header>",
         "<hr>",
         '<div class="p-navigation__row">',
-        "<h2>Ozbargain Active Polls (within the last week)</h2>",
+        "<h2>Ozbargain Active Polls</h2>",
+        "</div>",
+        "<div class='row'>",
+        "<p>Last updated: {}</p>".format(datetime.now().strftime("%Y-%m-%d %H:%M:%S")),
         "</div>",
         '<hr class="is-fixed-width">',
         "</header>",
     ]
 
-    body_texts = ["| Poll Title | Statistics |", "| ----- | ----- | "]
-    for (title, value) in title_and_id_array:
-        title = title.replace("|", " - ")
-        markdown_text = f"| <a href='{PREFIX_URL}{value}' title='Ozbargain'><b>{title}</b></a> | <a href='{value}.html' title='Rendered Pie Chart'>Poll</a> |"
+    body_texts = [
+        "| Date Published | Title | Statistics |",
+        "| ----- | ----- | ----- | ",
+    ]
+    for poll in polls:
+        markdown_text = poll.create_markdown_text
         body_texts.append(markdown_text)
 
     body_texts = "\n".join(body_texts)
@@ -155,12 +196,11 @@ def create_html_page(title_and_id_array):
     html_body = (
         "\n".join(body_styling_prefix) + html_body + "\n".join(body_styling_suffix)
     )
-
     html_header = "\n".join(header_text)
 
-    index_path = f"{OUTPUT_PATH}/index.html"
+    index_path = f"{OUTPUT_PATH}index.html"
     html_page = html_header + html_body
-    with open(f"{index_path}", "w+", encoding="utf-8") as f:
+    with open(f"{index_path}", "w+") as f:
         f.write(html_page)
 
     return
@@ -170,11 +210,6 @@ if __name__ == "__main__":
     # global variables
     PREFIX_URL = "https://www.ozbargain.com.au/node/"
     OUTPUT_PATH = "docs/"
-
-    # empty path if it exists
-    shutil.rmtree(OUTPUT_PATH)
-    if not os.path.exists(OUTPUT_PATH):
-        os.makedirs(OUTPUT_PATH)
 
     # find active polls
     active_polls = find_all_active_polls()
