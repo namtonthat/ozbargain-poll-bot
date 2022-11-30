@@ -8,7 +8,7 @@ import pandas as pd
 from math import pi
 import os
 import markdown2
-from pathlib import Path
+import shutil
 
 from bokeh.io import show, save, output_file
 from bokeh.plotting import figure, curdoc
@@ -107,7 +107,11 @@ def generate_poll_webchart(id):
         span_vote = poll.find_all("span", class_="nvb voteup")
         span_options = poll.find_all("span", class_="polltext")
         options = [option.get_text() for option in span_options]
-        votes = [int(vote.get_text()) for vote in span_vote]
+        try:
+            votes = [int(vote.get_text()) for vote in span_vote]
+        except ValueError:
+            return
+
         title = soup.find("title").text.split(" - ")[0]
         if options:
             create_bokeh_plot(options, votes, title, id)
@@ -120,15 +124,43 @@ def generate_poll_webchart(id):
 
 def create_html_page(title_and_id_array):
     """Create navigation webpage for all available Ozbargain Polls within the last day"""
-    markdown_text = "## Ozbargain Active Polls (within the last week)\n\n"
+    header_text = [
+        '<link rel="stylesheet" href="https://assets.ubuntu.com/v1/vanilla-framework-version-3.8.2.min.css"/>',
+        "<header>",
+        "<hr>",
+        '<div class="p-navigation__row">',
+        "<h2>Ozbargain Active Polls (within the last week)</h2>",
+        "</div>",
+        '<hr class="is-fixed-width">',
+        "</header>",
+    ]
 
+    body_texts = ["| Poll Title | Statistics |", "| ----- | ----- | "]
     for (title, value) in title_and_id_array:
-        markdown_text += f"* <a href='{PREFIX_URL}/{value}' title='Ozbargain Poll'>({value})</a> <a href='{value}.html' title='Rendered Pie Chart'>{title}</a>\n"
+        title = title.replace("|", " - ")
+        markdown_text = f"| <a href='{PREFIX_URL}{value}' title='Ozbargain'><b>{title}</b></a> | <a href='{value}.html' title='Rendered Pie Chart'>Poll</a> |"
+        body_texts.append(markdown_text)
 
-    html_page = markdown2.markdown(markdown_text)
+    body_texts = "\n".join(body_texts)
+
+    converter = markdown2.Markdown(extras=["tables"])
+    html_body = converter.convert(body_texts)
+    body_styling_prefix = [
+        "<body>",
+        "<div class='row'>",
+        "<main class='col-12'>",
+    ]
+    body_styling_suffix = ["</main>", "</div>", "</body>"]
+
+    html_body = (
+        "\n".join(body_styling_prefix) + html_body + "\n".join(body_styling_suffix)
+    )
+
+    html_header = "\n".join(header_text)
+
     index_path = f"{OUTPUT_PATH}/index.html"
-
-    with open(f"{index_path}", "w+") as f:
+    html_page = html_header + html_body
+    with open(f"{index_path}", "w+", encoding="utf-8") as f:
         f.write(html_page)
 
     return
@@ -140,8 +172,7 @@ if __name__ == "__main__":
     OUTPUT_PATH = "docs/"
 
     # empty path if it exists
-    Path.rmdir(OUTPUT_PATH)
-
+    shutil.rmtree(OUTPUT_PATH)
     # create paths
     if not os.path.exists(OUTPUT_PATH):
         os.makedirs(OUTPUT_PATH)
@@ -154,4 +185,7 @@ if __name__ == "__main__":
         pie_chart = generate_poll_webchart(poll_id)
         pie_charts.append(pie_chart)
 
-    create_html_page(pie_charts)
+    valid_pie_charts = [x for x in pie_charts if x is not None]
+    print(valid_pie_charts)
+
+    create_html_page(valid_pie_charts)
