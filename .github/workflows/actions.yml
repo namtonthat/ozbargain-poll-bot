@@ -1,4 +1,4 @@
-name: daily-runs
+name: Ozbargain Poll Bot
 
 on: [push]
 # on:

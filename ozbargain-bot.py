@@ -118,7 +118,7 @@ def create_html_page(title_and_id_array):
 if __name__ == "__main__":
     # global variables
     PREFIX_URL = "https://www.ozbargain.com.au/node/"
-    OUTPUT_PATH = "dist/"
+    OUTPUT_PATH = "docs/"
 
     # create paths
     if not os.path.exists(OUTPUT_PATH):
