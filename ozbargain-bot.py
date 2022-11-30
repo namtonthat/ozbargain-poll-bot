@@ -173,7 +173,6 @@ if __name__ == "__main__":
 
     # empty path if it exists
     shutil.rmtree(OUTPUT_PATH)
-    # create paths
     if not os.path.exists(OUTPUT_PATH):
         os.makedirs(OUTPUT_PATH)
 

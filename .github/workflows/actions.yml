@@ -2,6 +2,17 @@ name: daily-scrape
 
 # on: [push]
 on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+        - info
+        - warning
+        - debug
   schedule:
     - cron: '0 0 * * 0' # once a week
 
