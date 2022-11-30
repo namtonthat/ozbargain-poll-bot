@@ -7,6 +7,7 @@ import requests
 import pandas as pd
 from math import pi
 import os
+import markdown2
 
 from bokeh.io import show, save, output_file
 from bokeh.plotting import figure, curdoc
@@ -61,44 +62,64 @@ def generate_poll_webchart(id):
             return
 
     if options:
-        LOGGER.info('Data found for %s', id)
-        x = dict(zip(options, votes))
-        data = pd.Series(x).reset_index(name='value').rename(columns={'index': 'options'})
-        data['angle'] = data['value']/data['value'].sum() * 2*pi
-        if len(x) > 2:
-                data['color'] = TolRainbow[len(x)]
-        elif (len(x) > 0) and (len(x) <=2):
-                data['color'] = Sunset[3][:len(x)]
+            LOGGER.info('Data found for %s', id)
+            x = dict(zip(options, votes))
+            data = pd.Series(x).reset_index(name='value').rename(columns={'index': 'options'})
+            data['angle'] = data['value']/data['value'].sum() * 2*pi
+            if len(x) > 2:
+                    data['color'] = TolRainbow[len(x)]
+            elif (len(x) > 0) and (len(x) <=2):
+                    data['color'] = Sunset[3][:len(x)]
 
-        # checks whether an options exists
-        # set theme
-        curdoc().theme='light_minimal'
+            # checks whether an options exists
+            # set theme
+            curdoc().theme='light_minimal'
 
-        # create figure
-        p = figure(width=1000, height=1000, title=f"{title}",
-                tooltips="@options: @value", x_range=(-0.5, 1.0))
+            # create figure
+            p = figure(width=1000, height=1000, title=f"{title}",
+                    tooltips="@options: @value", x_range=(-0.5, 1.0))
 
 
-        p.wedge(x=0, y=1, radius=0.4,
-                start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
-                line_color="white", fill_color='color', legend_field='options', source=data)
+            p.wedge(x=0, y=1, radius=0.4,
+                    start_angle=cumsum('angle', include_zero=True), end_angle=cumsum('angle'),
+                    line_color="white", fill_color='color', legend_field='options', source=data)
 
-        p.axis.axis_label = None
-        p.axis.visible = False
-        p.grid.grid_line_color = None
+            p.axis.axis_label = None
+            p.axis.visible = False
+            p.grid.grid_line_color = None
 
-        output_path = f"outputs/"
-        if not os.path.exists(output_path):
-                os.makedirs(output_path)
 
-        LOGGER.info('Generating webchart for poll: %s', id)
-        # setting output
-        output_file(filename=f"{output_path}/{id}.html", title=title)
 
-        save(p)
+            LOGGER.info('Generating webchart for poll: %s', id)
+            # setting output
+            output_file(filename=f"{OUTPUT_PATH}/{id}.html", title=title)
+
+            save(p)
+            return id
+
+def create_html_page(array):
+    """ Render HTML index page for navigation """
+    markdown_text = ""
+    for value in array:
+        markdown_text+=f"* <a href='{value}.html'>{value}</a>\n"
+
+    html_page = markdown2.markdown(markdown_text)
+    index_path = f"{OUTPUT_PATH}/index.html"
+
+    with open(f'{index_path}', 'w+') as f:
+        f.write(html_page)
+
+    return
 
 if __name__ == "__main__":
+    OUTPUT_PATH = f"dist/"
+    if not os.path.exists(OUTPUT_PATH):
+        os.makedirs(OUTPUT_PATH)
+
     active_polls = find_all_active_polls()
 
+    pie_chart_ids = []
     for poll_id in active_polls:
-        generate_poll_webchart(poll_id)
+        pie_chart_id = generate_poll_webchart(poll_id)
+        if pie_chart_id:
+            pie_chart_ids.append(pie_chart_id)
