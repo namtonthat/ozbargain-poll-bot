@@ -6,7 +6,7 @@ authors = ["Nam Tonthat <n.nam.tonthat@gmail.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "3.11"
 bokeh = "^3.0.2"
 requests = "^2.28.1"
 bs4 = "^0.0.1"

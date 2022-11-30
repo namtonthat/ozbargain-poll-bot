@@ -17,7 +17,7 @@ jobs:
         id: setup-python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.8.13' # install the python version needed
+          python-version: '3.11' # install the python version needed
 
       - name: install poetry
         uses: snok/install-poetry@v1
