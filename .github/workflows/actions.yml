@@ -1,9 +1,9 @@
-name: Ozbargain Poll Bot
+name: daily-scrape
 
-on: [push]
-# on:
-#   schedule:
-#     - cron: '0 0 * * *'
+# on: [push]
+on:
+  schedule:
+    - cron: '0 0 * * *'
 
 jobs:
   ci:
