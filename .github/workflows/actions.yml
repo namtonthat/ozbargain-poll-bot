@@ -1,4 +1,4 @@
-name: daily-scrape
+name: weekly-scrape
 
 # on: [push]
 on:
