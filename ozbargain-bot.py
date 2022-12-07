@@ -220,6 +220,5 @@ if __name__ == "__main__":
         pie_charts.append(pie_chart)
 
     valid_pie_charts = [x for x in pie_charts if x is not None]
-    print(valid_pie_charts)
 
     create_html_page(valid_pie_charts)
