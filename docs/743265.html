@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Ring Always Home Cam</title>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.0.2.min.js"></script>
+    <script type="text/javascript">
+        Bokeh.set_log_level("info");
+    </script>
+  </head>
+  <body>
+    <div id="913e8c01-d777-4e7a-af0c-8cfcd62e1c68" data-root-id="p4766" style="display: contents;"></div>
+  
+    <script type="application/json" id="p5016">
+      {"21f80300-5d84-4c17-aa6e-4a3bfd180752":{"version":"3.0.2","title":"Bokeh Application","defs":[],"roots":[{"type":"object","name":"Figure","id":"p4766","attributes":{"name":"pie","width":1000,"height":1000,"x_range":{"type":"object","name":"Range1d","id":"p4776","attributes":{"start":-0.5}},"y_range":{"type":"object","name":"DataRange1d","id":"p4768"},"x_scale":{"type":"object","name":"LinearScale","id":"p4780"},"y_scale":{"type":"object","name":"LinearScale","id":"p4782"},"title":{"type":"object","name":"Title","id":"p4769","attributes":{"text":"Ring Always Home Cam","text_color":"#5B5B5B","text_font":"tahoma","text_font_size":"1.25em","text_font_style":"bold"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p4826","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p4817","attributes":{"selected":{"type":"object","name":"Selection","id":"p4818","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p4819"},"data":{"type":"map","entries":[["index",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAEAAAACAAAA"},"shape":[3],"dtype":"int32","order":"little"}],["options",{"type":"ndarray","array":["Yes","No","Maybe"],"shape":[3],"dtype":"object","order":"little"}],["value",{"type":"ndarray","array":{"type":"bytes","data":"BAAAABsAAAADAAAA"},"shape":[3],"dtype":"int32","order":"little"}],["angle",{"type":"ndarray","array":{"type":"bytes","data":"UwwiIoOn5z9musykVvUTQD6JmVmiveE/"},"shape":[3],"dtype":"float64","order":"little"}],["color",{"type":"ndarray","array":["#1965B0","#F7F056","#DC050C"],"shape":[3],"dtype":"object","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p4827","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p4828"}}},"glyph":{"type":"object","name":"Wedge","id":"p4823","attributes":{"x":{"type":"value","value":0},"y":{"type":"value","value":1},"radius":{"type":"value","value":0.4},"start_angle":{"type":"expr","expr":{"type":"object","name":"CumSum","id":"p4815","attributes":{"field":"angle","include_zero":true}}},"end_angle":{"type":"expr","expr":{"type":"object","name":"CumSum","id":"p4816","attributes":{"field":"angle"}}},"line_color":{"type":"value","value":"white"},"fill_color":{"type":"field","field":"color"}}},"nonselection_glyph":{"type":"object","name":"Wedge","id":"p4824","attributes":{"x":{"type":"value","value":0},"y":{"type":"value","value":1},"radius":{"type":"value","value":0.4},"start_angle":{"type":"expr","expr":{"id":"p4815"}},"end_angle":{"type":"expr","expr":{"id":"p4816"}},"line_color":{"type":"value","value":"white"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"field","field":"color"},"fill_alpha":{"type":"value","value":0.1},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"Wedge","id":"p4825","attributes":{"x":{"type":"value","value":0},"y":{"type":"value","value":1},"radius":{"type":"value","value":0.4},"start_angle":{"type":"expr","expr":{"id":"p4815"}},"end_angle":{"type":"expr","expr":{"id":"p4816"}},"line_color":{"type":"value","value":"white"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"field","field":"color"},"fill_alpha":{"type":"value","value":0.2},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p4772","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p4798"},{"type":"object","name":"WheelZoomTool","id":"p4799"},{"type":"object","name":"BoxZoomTool","id":"p4800","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p4801","attributes":{"syncable":false,"level":"overlay","visible":false,"left_units":"canvas","right_units":"canvas","bottom_units":"canvas","top_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p4802"},{"type":"object","name":"ResetTool","id":"p4803"},{"type":"object","name":"HelpTool","id":"p4804"},{"type":"object","name":"HoverTool","id":"p4806","attributes":{"renderers":"auto","tooltips":"@options: @value"}}]}},"left":[{"type":"object","name":"LinearAxis","id":"p4791","attributes":{"visible":false,"ticker":{"type":"object","name":"BasicTicker","id":"p4792","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p4794"},"axis_label_standoff":10,"axis_label_text_color":"#5B5B5B","axis_label_text_font":"Calibri Light","axis_label_text_font_size":"1.15em","axis_label_text_font_style":"bold","major_label_policy":{"type":"object","name":"AllLabels","id":"p4793"},"major_label_text_color":"#5B5B5B","major_label_text_font":"Calibri Light","major_label_text_font_size":"0.95em","major_label_text_font_style":"bold","axis_line_color":"#5B5B5B","axis_line_alpha":1,"major_tick_line_color":"#5B5B5B","major_tick_line_alpha":0.25,"major_tick_in":0,"major_tick_out":3,"minor_tick_line_color":"#5B5B5B","minor_tick_line_alpha":0.25}}],"below":[{"type":"object","name":"LinearAxis","id":"p4784","attributes":{"visible":false,"ticker":{"type":"object","name":"BasicTicker","id":"p4785","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p4787"},"axis_label_standoff":10,"axis_label_text_color":"#5B5B5B","axis_label_text_font":"Calibri Light","axis_label_text_font_size":"1.15em","axis_label_text_font_style":"bold","major_label_policy":{"type":"object","name":"AllLabels","id":"p4786"},"major_label_text_color":"#5B5B5B","major_label_text_font":"Calibri Light","major_label_text_font_size":"0.95em","major_label_text_font_style":"bold","axis_line_color":"#5B5B5B","axis_line_alpha":1,"major_tick_line_color":"#5B5B5B","major_tick_line_alpha":0.25,"major_tick_in":0,"major_tick_out":3,"minor_tick_line_color":"#5B5B5B","minor_tick_line_alpha":0.25}}],"center":[{"type":"object","name":"Grid","id":"p4790","attributes":{"axis":{"id":"p4784"},"grid_line_color":null}},{"type":"object","name":"Grid","id":"p4797","attributes":{"dimension":1,"axis":{"id":"p4791"},"grid_line_color":null}},{"type":"object","name":"Legend","id":"p4842","attributes":{"border_line_alpha":0,"background_fill_alpha":0.25,"label_text_color":"#5B5B5B","label_text_font":"Calibri Light","label_text_font_size":"0.95em","label_text_font_style":"bold","label_standoff":8,"glyph_width":15,"spacing":8,"items":[{"type":"object","name":"LegendItem","id":"p4843","attributes":{"label":{"type":"field","field":"options"},"renderers":[{"id":"p4826"}]}}]}}]}}]}}
+    </script>
+    <script type="text/javascript">
+      (function() {
+        const fn = function() {
+          Bokeh.safely(function() {
+            (function(root) {
+              function embed_document(root) {
+              const docs_json = document.getElementById('p5016').textContent;
+              const render_items = [{"docid":"21f80300-5d84-4c17-aa6e-4a3bfd180752","roots":{"p4766":"913e8c01-d777-4e7a-af0c-8cfcd62e1c68"},"root_ids":["p4766"]}];
+              root.Bokeh.embed.embed_items(docs_json, render_items);
+              }
+              if (root.Bokeh !== undefined) {
+                embed_document(root);
+              } else {
+                let attempts = 0;
+                const timer = setInterval(function(root) {
+                  if (root.Bokeh !== undefined) {
+                    clearInterval(timer);
+                    embed_document(root);
+                  } else {
+                    attempts++;
+                    if (attempts > 100) {
+                      clearInterval(timer);
+                      console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                    }
+                  }
+                }, 10, root)
+              }
+            })(window);
+          });
+        };
+        if (document.readyState != "loading") fn();
+        else document.addEventListener("DOMContentLoaded", fn);
+      })();
+    </script>
+  </body>
+</html>
