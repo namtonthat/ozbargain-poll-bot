@@ -76,13 +76,14 @@ def create_bokeh_plot(options, votes, title, id):
     x = dict(zip(options, votes))
     data = pd.Series(x).reset_index(name="value").rename(columns={"index": "options"})
     data["angle"] = data["value"] / data["value"].sum() * 2 * pi
-    if len(x) > 2:
-        data["color"] = TolRainbow[len(x)]
-    elif (len(x) > 0) and (len(x) <= 2):
-        data["color"] = Sunset[3][: len(x)]
+    no_options = len(x)
 
-    # checks whether an options exists
-    # set theme
+    if no_options > 2:
+        data["color"] = TolRainbow[no_options]
+    elif (no_options > 0) and (no_options <= 2):
+        data["color"] = Sunset[3][:no_options]
+
+    # checks whether an options exists and set theme
     curdoc().theme = "light_minimal"
 
     # create figure
@@ -141,8 +142,9 @@ def generate_poll_webchart(id):
         date_published = poll_stats.get("datePublished")[:10]
         votes = [int(vote.get_text()) for vote in span_vote]
         title = soup.find("title").text.split(" - ")[0]
+        max_options = list(TolRainbow.keys())[-1]
 
-        if options:
+        if options and (options <= max_options):
             create_bokeh_plot(options, votes, title, id)
             ozb_poll = OzbargainPoll(
                 date_published=date_published,
@@ -152,6 +154,8 @@ def generate_poll_webchart(id):
                 votes=votes,
             )
             return ozb_poll
+        elif options > max_options:
+            LOGGER.info("Too many options, skipping %s", id)
 
     except (AttributeError, ValueError) as e:
         LOGGER.info("No data found for %s", id)
