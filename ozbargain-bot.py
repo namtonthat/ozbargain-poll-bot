@@ -144,7 +144,7 @@ def generate_poll_webchart(id):
         title = soup.find("title").text.split(" - ")[0]
         max_options = list(TolRainbow.keys())[-1]
 
-        if options and (options <= max_options):
+        if options and (len(options) <= max_options):
             create_bokeh_plot(options, votes, title, id)
             ozb_poll = OzbargainPoll(
                 date_published=date_published,
