@@ -154,7 +154,7 @@ def generate_poll_webchart(id):
                 votes=votes,
             )
             return ozb_poll
-        elif options > max_options:
+        elif len(options) > max_options:
             LOGGER.info("Too many options, skipping %s", id)
 
     except (AttributeError, ValueError) as e:
