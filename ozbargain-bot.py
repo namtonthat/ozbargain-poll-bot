@@ -1,5 +1,5 @@
 """
-A bot that scrapes Ozbargain polls and generates a webchart for them - stored in Github every day.
+A bot that scrapes Ozbargain polls and generates a webchart for them - stored in Github every week.
 """
 
 from bs4 import BeautifulSoup
