@@ -5,20 +5,20 @@ on:
   workflow_dispatch:
     inputs:
       logLevel:
-        description: 'Log level'
+        description: "Log level"
         required: true
-        default: 'warning'
+        default: "warning"
         type: choice
         options:
-        - info
-        - warning
-        - debug
+          - info
+          - warning
+          - debug
   schedule:
-    - cron: '0 0 * * 0' # once a week
+    - cron: "0 0 * * 0" # once a week
 
 jobs:
   ci:
-    runs-on: 'ubuntu-latest'
+    runs-on: "ubuntu-latest"
 
     steps:
       - name: checkout repo content
@@ -27,8 +27,6 @@ jobs:
       - name: setup python
         id: setup-python
         uses: actions/setup-python@v4
-        with:
-          python-version: '3.11' # install the python version needed
 
       - name: install poetry
         uses: snok/install-poetry@v1
