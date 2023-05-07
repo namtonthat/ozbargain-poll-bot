@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>Do You Support Capitalism?</title>
+<style>
+      html, body {
+        box-sizing: border-box;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script type="text/javascript" src="https://cdn.bokeh.org/bokeh/release/bokeh-3.0.3.min.js"></script>
+    <script type="text/javascript">
+        Bokeh.set_log_level("info");
+    </script>
+  </head>
+  <body>
+    <div id="ec7d454c-8918-4fe0-8362-bb17481644d6" data-root-id="p4515" style="display: contents;"></div>
+  
+    <script type="application/json" id="p4765">
+      {"2b4994d9-9f61-4e5b-9ed2-92198986a662":{"version":"3.0.3","title":"Bokeh Application","defs":[],"roots":[{"type":"object","name":"Figure","id":"p4515","attributes":{"name":"pie","width":1000,"height":1000,"x_range":{"type":"object","name":"Range1d","id":"p4525","attributes":{"start":-0.5}},"y_range":{"type":"object","name":"DataRange1d","id":"p4517"},"x_scale":{"type":"object","name":"LinearScale","id":"p4529"},"y_scale":{"type":"object","name":"LinearScale","id":"p4531"},"title":{"type":"object","name":"Title","id":"p4518","attributes":{"text":"Do You Support Capitalism?","text_color":"#5B5B5B","text_font":"tahoma","text_font_size":"1.15em"}},"renderers":[{"type":"object","name":"GlyphRenderer","id":"p4575","attributes":{"data_source":{"type":"object","name":"ColumnDataSource","id":"p4566","attributes":{"selected":{"type":"object","name":"Selection","id":"p4567","attributes":{"indices":[],"line_indices":[]}},"selection_policy":{"type":"object","name":"UnionRenderers","id":"p4568"},"data":{"type":"map","entries":[["index",{"type":"ndarray","array":{"type":"bytes","data":"AAAAAAEAAAA="},"shape":[2],"dtype":"int32","order":"little"}],["options",{"type":"ndarray","array":["Yes","No"],"shape":[2],"dtype":"object","order":"little"}],["value",{"type":"ndarray","array":{"type":"bytes","data":"nQEAABkBAAA="},"shape":[2],"dtype":"int32","order":"little"}],["angle",{"type":"ndarray","array":{"type":"bytes","data":"lJU2eLzpDUCcxFEwOloEQA=="},"shape":[2],"dtype":"float64","order":"little"}],["color",{"type":"ndarray","array":["#364B9A","#EAECCC"],"shape":[2],"dtype":"object","order":"little"}]]}}},"view":{"type":"object","name":"CDSView","id":"p4576","attributes":{"filter":{"type":"object","name":"AllIndices","id":"p4577"}}},"glyph":{"type":"object","name":"Wedge","id":"p4572","attributes":{"x":{"type":"value","value":0},"y":{"type":"value","value":1},"radius":{"type":"value","value":0.4},"start_angle":{"type":"expr","expr":{"type":"object","name":"CumSum","id":"p4564","attributes":{"field":"angle","include_zero":true}}},"end_angle":{"type":"expr","expr":{"type":"object","name":"CumSum","id":"p4565","attributes":{"field":"angle"}}},"line_color":{"type":"value","value":"white"},"fill_color":{"type":"field","field":"color"}}},"nonselection_glyph":{"type":"object","name":"Wedge","id":"p4573","attributes":{"x":{"type":"value","value":0},"y":{"type":"value","value":1},"radius":{"type":"value","value":0.4},"start_angle":{"type":"expr","expr":{"id":"p4564"}},"end_angle":{"type":"expr","expr":{"id":"p4565"}},"line_color":{"type":"value","value":"white"},"line_alpha":{"type":"value","value":0.1},"fill_color":{"type":"field","field":"color"},"fill_alpha":{"type":"value","value":0.1},"hatch_alpha":{"type":"value","value":0.1}}},"muted_glyph":{"type":"object","name":"Wedge","id":"p4574","attributes":{"x":{"type":"value","value":0},"y":{"type":"value","value":1},"radius":{"type":"value","value":0.4},"start_angle":{"type":"expr","expr":{"id":"p4564"}},"end_angle":{"type":"expr","expr":{"id":"p4565"}},"line_color":{"type":"value","value":"white"},"line_alpha":{"type":"value","value":0.2},"fill_color":{"type":"field","field":"color"},"fill_alpha":{"type":"value","value":0.2},"hatch_alpha":{"type":"value","value":0.2}}}}}],"toolbar":{"type":"object","name":"Toolbar","id":"p4521","attributes":{"tools":[{"type":"object","name":"PanTool","id":"p4547"},{"type":"object","name":"WheelZoomTool","id":"p4548"},{"type":"object","name":"BoxZoomTool","id":"p4549","attributes":{"overlay":{"type":"object","name":"BoxAnnotation","id":"p4550","attributes":{"syncable":false,"level":"overlay","visible":false,"left_units":"canvas","right_units":"canvas","bottom_units":"canvas","top_units":"canvas","line_color":"black","line_alpha":1.0,"line_width":2,"line_dash":[4,4],"fill_color":"lightgrey","fill_alpha":0.5}}}},{"type":"object","name":"SaveTool","id":"p4551"},{"type":"object","name":"ResetTool","id":"p4552"},{"type":"object","name":"HelpTool","id":"p4553"},{"type":"object","name":"HoverTool","id":"p4555","attributes":{"renderers":"auto","tooltips":"@options: @value"}}]}},"left":[{"type":"object","name":"LinearAxis","id":"p4540","attributes":{"visible":false,"ticker":{"type":"object","name":"BasicTicker","id":"p4542","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p4541"},"axis_label_standoff":10,"axis_label_text_color":"#5B5B5B","axis_label_text_font":"Helvetica","axis_label_text_font_size":"1.25em","axis_label_text_font_style":"normal","major_label_policy":{"type":"object","name":"AllLabels","id":"p4543"},"major_label_text_color":"#5B5B5B","major_label_text_font":"Helvetica","major_label_text_font_size":"1.025em","axis_line_color":"#5B5B5B","axis_line_alpha":0,"major_tick_line_color":"#5B5B5B","major_tick_line_alpha":0,"minor_tick_line_color":"#5B5B5B","minor_tick_line_alpha":0}}],"below":[{"type":"object","name":"LinearAxis","id":"p4533","attributes":{"visible":false,"ticker":{"type":"object","name":"BasicTicker","id":"p4535","attributes":{"mantissas":[1,2,5]}},"formatter":{"type":"object","name":"BasicTickFormatter","id":"p4534"},"axis_label_standoff":10,"axis_label_text_color":"#5B5B5B","axis_label_text_font":"Helvetica","axis_label_text_font_size":"1.25em","axis_label_text_font_style":"normal","major_label_policy":{"type":"object","name":"AllLabels","id":"p4536"},"major_label_text_color":"#5B5B5B","major_label_text_font":"Helvetica","major_label_text_font_size":"1.025em","axis_line_color":"#5B5B5B","axis_line_alpha":0,"major_tick_line_color":"#5B5B5B","major_tick_line_alpha":0,"minor_tick_line_color":"#5B5B5B","minor_tick_line_alpha":0}}],"center":[{"type":"object","name":"Grid","id":"p4539","attributes":{"axis":{"id":"p4533"},"grid_line_color":null}},{"type":"object","name":"Grid","id":"p4546","attributes":{"dimension":1,"axis":{"id":"p4540"},"grid_line_color":null}},{"type":"object","name":"Legend","id":"p4591","attributes":{"border_line_alpha":0,"background_fill_alpha":0.25,"label_text_color":"#5B5B5B","label_text_font":"Helvetica","label_text_font_size":"1.025em","label_standoff":8,"glyph_width":15,"spacing":8,"items":[{"type":"object","name":"LegendItem","id":"p4592","attributes":{"label":{"type":"field","field":"options"},"renderers":[{"id":"p4575"}]}}]}}]}}]}}
+    </script>
+    <script type="text/javascript">
+      (function() {
+        const fn = function() {
+          Bokeh.safely(function() {
+            (function(root) {
+              function embed_document(root) {
+              const docs_json = document.getElementById('p4765').textContent;
+              const render_items = [{"docid":"2b4994d9-9f61-4e5b-9ed2-92198986a662","roots":{"p4515":"ec7d454c-8918-4fe0-8362-bb17481644d6"},"root_ids":["p4515"]}];
+              root.Bokeh.embed.embed_items(docs_json, render_items);
+              }
+              if (root.Bokeh !== undefined) {
+                embed_document(root);
+              } else {
+                let attempts = 0;
+                const timer = setInterval(function(root) {
+                  if (root.Bokeh !== undefined) {
+                    clearInterval(timer);
+                    embed_document(root);
+                  } else {
+                    attempts++;
+                    if (attempts > 100) {
+                      clearInterval(timer);
+                      console.log("Bokeh: ERROR: Unable to run BokehJS code because BokehJS library is missing");
+                    }
+                  }
+                }, 10, root)
+              }
+            })(window);
+          });
+        };
+        if (document.readyState != "loading") fn();
+        else document.addEventListener("DOMContentLoaded", fn);
+      })();
+    </script>
+  </body>
+</html>
